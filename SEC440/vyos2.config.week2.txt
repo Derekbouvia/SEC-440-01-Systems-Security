@@ -1,0 +1,34 @@
+show interfaces
+configure
+set system host-name vyos2-derek
+set interfaces ethernet eth0 description "To WAN"
+set interfaces ethernet eth0 address 10.0.17.74/24
+set interfaces ethernet eth1 description "To LAN"
+set interfaces ethernet eth1 address 10.0.5.3/24
+
+#Set default gateway and DNS server to SEC-350-Gateway Firewall (10.0.17.2), points WAN interface to the internet
+
+set protocols static route 0.0.0.0/0 next-hop 10.0.17.2
+set system name-server 10.0.17.2
+commit
+save
+show interfaces
+
+#Nat rules
+
+configure
+set nat source rule 10 description "NAT FROM LAN to WAN"
+set nat source rule 10 outbound-interface eth0
+set nat source rule 10 source address 10.0.5.0/24
+set nat source rule 10 translation address masquerade
+commit
+save
+show nat source rule 10
+#Configuring DNS forwarding
+set service dns forwarding listen-address 10.0.5.1
+set service dns forwarding allow-from 10.0.5.0/24
+set service dns forwarding system
+set service ssh listen address 0.0.0.0
+commit
+save
+show service
