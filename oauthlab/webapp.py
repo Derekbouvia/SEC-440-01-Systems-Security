@@ -11,8 +11,8 @@ creds =json.loads(jsoncontent)
 
 # This information is obtained upon registration of a new GitHub OAuth
 # application here: https://github.com/settings/applications/new
-client_id = "1256e39bf9dbd6c8fff0"
-client_secret = "e7d50218e06915784c85530724b3285e6683decc"
+client_id = creds["client_id"]
+client_secret = creds["client_secret"]
 authorization_base_url = 'https://github.com/login/oauth/authorize'
 token_url = 'https://github.com/login/oauth/access_token'
 
